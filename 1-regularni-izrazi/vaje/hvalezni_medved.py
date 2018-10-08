@@ -6,6 +6,8 @@
 # medved*.
 ###############################################################################
 
+import re
+
 test_text = """Gori nekje v gorah, ne ve se več, ali je bilo pri Macigoju ali
 Naravniku, je šivala gospodinja v senci pod drevesom in zibala otroka. Naenkrat
 prilomasti - pa prej ni ničesar opazila - medved in ji moli taco, v kateri je
@@ -26,6 +28,13 @@ medved. Zvrhano zibelko sladkih hrušk mi je prinesel za en sam izdrt trn"."""
 # {'izdere', 'debel', 'oddide', 'začudeno'}
 ###############################################################################
 
+def find_words(test, niz):
+    n = r"\b\w*" + niz + r"\w*\b"
+    mn = set()
+    print(n)
+    for je in re.finditer(n, test):
+            mn.add(je.group(0))
+    return mn
 
 ###############################################################################
 # 2) Sestavite funkcijo [find_prefix], ki vrne množico vseh besed, ki se
@@ -35,6 +44,12 @@ medved. Zvrhano zibelko sladkih hrušk mi je prinesel za en sam izdrt trn"."""
 # {'zibala', 'zibel', 'zibelko'}
 ###############################################################################
 
+def find_prefix(tekst, antikoncnica):
+    vzorec = r"\b" + antikoncnica + r"\w*\b"
+    mn = set()
+    for je in re.finditer(vzorec, tekst):
+            mn.add(je.group(0))
+    return mn
 
 ###############################################################################
 # 3) Sestavite funkcijo [find_suffix], ki vrne množico vseh besed, ki se
