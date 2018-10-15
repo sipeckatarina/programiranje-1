@@ -5,6 +5,7 @@
 # literarnih besedil, kot je na primer koroška narodna pripovedka *Hvaležni
 # medved*.
 ###############################################################################
+"hello"
 
 import re
 
