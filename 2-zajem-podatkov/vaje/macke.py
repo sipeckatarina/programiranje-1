@@ -20,17 +20,15 @@ csv_filename = 'muci.csv'
 def download_url_to_string(url):
     '''This function takes a URL as argument and tries to download it
     using requests. Upon success, it returns the page contents as string.'''
-    url_get = requests.get(url)
-    #open(frontpage_filename, 'wb').write(url_get.content)
     try:
         # del kode, ki morda sproži napako
-        return url_get
-    except 'TODO':
+        url_get = requests.get(url)
+    except:
         # koda, ki se izvede pri napaki
         # dovolj je če izpišemo opozorilo in prekinemo izvajanje funkcije
-        return TODO
+        return "Tole gre pa bolj slabo."
     # nadaljujemo s kodo če ni prišlo do napake
-    return TODO
+    return url_get.text
 
 
 def save_string_to_file(text, directory, filename):
@@ -46,10 +44,12 @@ def save_string_to_file(text, directory, filename):
 # Definirajte funkcijo, ki prenese glavno stran in jo shrani v datoteko.
 
 
-def save_frontpage(TODO):
+def save_frontpage(url, directory, file_name):
     '''Save "cats_frontpage_url" to the file
     "cat_directory"/"frontpage_filename"'''
-    return TODO
+    besedilo = download_url_to_string(url)
+    save_string_to_file(besedilo, directory, file_name)
+    return None
 
 ###############################################################################
 # Po pridobitvi podatkov jih želimo obdelati.
@@ -58,7 +58,9 @@ def save_frontpage(TODO):
 
 def read_file_to_string(directory, filename):
     '''Return the contents of the file "directory"/"filename" as a string.'''
-    return TODO
+    potka = os.path.join(directory, filename) 
+    with open(potka) as dat:
+        return dat.read()
 
 # Definirajte funkcijo, ki sprejme niz, ki predstavlja vsebino spletne strani,
 # in ga razdeli na dele, kjer vsak del predstavlja en oglas. To storite s
@@ -66,9 +68,14 @@ def read_file_to_string(directory, filename):
 # oglasa. Funkcija naj vrne seznam nizov.
 
 
-def page_to_ads(TODO):
+def page_to_ads(directory, filename):
     '''Split "page" to a list of advertisement blocks.'''
-    return TODO
+    nizi = []
+    ref = r'<div class="ad">.*?<div class="clear"></div>'
+    for section in re.finditer(ref, read_file_to_string(directory, filename)):
+        print("sem tukaj")
+        nizi.append(section)
+    return nizi
 
 # Definirajte funkcijo, ki sprejme niz, ki predstavlja oglas, in izlušči
 # podatke o imenu, ceni in opisu v oglasu.

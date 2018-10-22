@@ -5,7 +5,6 @@
 # literarnih besedil, kot je na primer koroška narodna pripovedka *Hvaležni
 # medved*.
 ###############################################################################
-"hello"
 
 import re
 
@@ -60,6 +59,12 @@ def find_prefix(tekst, antikoncnica):
 # {'zibala', 'razveselila', 'prestrašila', 'šivala', 'opazila', 'tla'}
 ###############################################################################
 
+def find_suffix(tekst, koncnica):
+    vzorec = r"\b\w*" + koncnica + r"\b"
+    mn = set()
+    for je in re.finditer(vzorec, tekst):
+        mn.add(je.group(0))
+    return mn
 
 ###############################################################################
 # 4) Sestavite funkcijo [double_letters], ki sprejme niz in vrne množico vseh
