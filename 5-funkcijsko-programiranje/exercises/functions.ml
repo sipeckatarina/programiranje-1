@@ -4,7 +4,13 @@
  Hint: Write a function for reversing lists.
 [*----------------------------------------------------------------------------*)
 
-let rec reverse = ()
+let rec reverse sez = 
+  let reverse' acc = function
+    | [] -> acc
+    | glava :: rep -> reverse' (glava :: acc) rep
+  in
+  reverse' [] sez
+  
 
 (*----------------------------------------------------------------------------*]
  The function [repeat x n] returns a list with [n] repetitions of [x]. For
@@ -16,7 +22,20 @@ let rec reverse = ()
  - : string list = []
 [*----------------------------------------------------------------------------*)
 
-let rec repeat = ()
+let rec repeat x n =
+  if n <= 0 then
+    []
+  else
+    x :: repeat x (n-1)
+
+let rec repeat x n =
+  let rec repeat' x n acc =
+    if n <= 0 then
+      acc
+    else
+      let new_acc = x :: acc in
+      repeat' x (n-1) new_acc in
+  repeat' x n []
 
 (*----------------------------------------------------------------------------*]
  The function [range] accepts an integer and returns a list of all non-negative
@@ -49,7 +68,13 @@ let rec map = ()
  - : int list = [2; 3; 4; 5; 6]
 [*----------------------------------------------------------------------------*)
 
-let rec map_tlrec = ()
+let rec map_tlrec f sez = 
+  let rec map' acc = function
+    | [] -> reverse acc 
+    | glava :: rep -> map' (f glava :: acc) rep
+  in
+  map' [] sez
+
 
 (*----------------------------------------------------------------------------*]
  The function [mapi f list] accepts a two argument function and returns a list
@@ -60,7 +85,11 @@ let rec map_tlrec = ()
  - : int list = [0; 1; 2; 5; 6; 7]
 [*----------------------------------------------------------------------------*)
 
-let rec mapi = ()
+let rec mapi f sez = 
+  let rec mapi' acc = function
+    | [] -> []
+    | x :: xs -> f x acc :: mapi' (acc + 1) xs
+  in mapi' 0 sez
 
 (*----------------------------------------------------------------------------*]
  The function [zip list1 list2] accepts two lists and returns a list of pairs
@@ -73,7 +102,12 @@ let rec mapi = ()
  Exception: Failure "Different lengths of input lists.".
 [*----------------------------------------------------------------------------*)
 
-let rec zip = ()
+let rec zip sez1 sez2 =
+    match sez1, sez2 with
+    | [], [] -> []
+    | x :: xs, [] -> failwith "Ne deluje"
+    | [], x :: xs -> failwith "Ne deluje"
+    | x :: xs, y :: ys -> (x, y) :: zip xs ys
 
 (*----------------------------------------------------------------------------*]
  The function [zip_enum_tlrec] accepts lists [x_0; x_1; ...] and [y_0; y_1; ...]
@@ -84,7 +118,16 @@ let rec zip = ()
  - : (int * string * int) list = [(0, "a", 7); (1, "b", 3); (2, "c", 4)]
 [*----------------------------------------------------------------------------*)
 
-let rec zip_enum_tlrec = ()
+let rec zip_enum_tlrec sez1, sez2 = 
+  let rec zip' acc sez1 sez2=
+    match sez1, sez2 with
+    | [], [] -> []
+    | x :: xs, [] -> failwith "Ne deluje"
+    | [], x :: xs -> failwith "Ne deluje"
+    | x :: xs, y :: ys -> (acc, x, y) :: zip' (acc + 1) xs xy
+    in 
+    zip' 0 sez1 sez2
+
 (*----------------------------------------------------------------------------*]
  The function [unzip] is the inverse of [zip]. It accepts a list of pairs
  [(x0, y0); (x1, y1); ...] and returns the pair ([x0; x1; ...], [y0; y1; ...]).
@@ -93,7 +136,10 @@ let rec zip_enum_tlrec = ()
  - : int list * string list = ([0; 1; 2], ["a"; "b"; "c"])
 [*----------------------------------------------------------------------------*)
 
-let rec unzip = ()
+let rec unzip sez =
+  match sez with
+  | [] -> []
+  | (x, y) :: xs ->  
 
 (*----------------------------------------------------------------------------*]
  The function [unzip_tlrec] is the tail recursive version of [unzip].
