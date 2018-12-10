@@ -22,7 +22,7 @@ type 'a tree =
 
 let leaf x = Node(Empty, x, Empty) 
 
-let test_tree = ()
+let test_tree = Node(Node(leaf 0, 2, Empty), 5, Node(leaf 6, 7, leaf 11))
 
 (*----------------------------------------------------------------------------*]
  Funkcija [mirror] vrne prezrcaljeno drevo. Na primeru [test_tree] torej vrne
@@ -38,7 +38,9 @@ let test_tree = ()
  Node (Empty, 2, Node (Empty, 0, Empty)))
 [*----------------------------------------------------------------------------*)
 
-let rec mirror = ()
+let rec mirror = function
+  | Empty -> Empty
+  | Node(tr1, x, tr2) -> Node(mirror tr2, x, mirror tr1)
 
 (*----------------------------------------------------------------------------*]
  Funkcija [height] vrne višino oz. globino drevesa, funkcija [size] pa število
@@ -50,9 +52,13 @@ let rec mirror = ()
  - : int = 6
 [*----------------------------------------------------------------------------*)
 
-let rec height = ()
+let rec height = function
+  | Empty -> 0
+  | Node(tr1, x, tr2) -> 1 + max (height tr1) (height tr2)
 
-let rec size = ()
+let rec size = function
+  | Empty -> 0
+  | Node(tr1, x, tr2) -> 1 + size tr1 + size tr2
 
 (*----------------------------------------------------------------------------*]
  Funkcija [follow directions tree] tipa [direction list -> 'a tree -> 'a option]
@@ -68,7 +74,14 @@ let rec size = ()
 
 type direction = Left | Right
 
-let rec follow = ()
+type option = None | Some of int
+
+let rec follow path tr = 
+  match path, tr with
+  | _, Empty -> None
+  | [], Node(_, x, _) -> Some(x)
+  | Left :: xs, Node(tr1, x, tr2) -> follow xs tr1
+  | Right :: xs, Node(tr1, x, tr2) -> follow xs tr2
 
 (*----------------------------------------------------------------------------*]
  Funkcija [prune directions tree] poišče vozlišče v drevesu [t] glede na 
@@ -83,7 +96,12 @@ let rec follow = ()
  Some (Node (Node (Node (Empty, 0, Empty), 2, Empty), 5, Empty))
 [*----------------------------------------------------------------------------*)
 
-let rec prune = ()
+let rec prune path tr = 
+  match path, tr with
+  | _, Empty -> Empty
+  | [], Node(tr1, x, tr2) -> Node(Empty, x, Empty)
+  | Left :: xs, Node(tr1, x, tr2) -> Node(prune xs tr1, x, tr2) 
+  | Right :: xs, Node(tr1, x, tr2) -> Node(tr1 , x, prune xs tr2) 
 
 (*----------------------------------------------------------------------------*]
  Funkcija [map_tree f tree] preslika drevo [tree] v novo drevo, ki vsebuje
@@ -95,7 +113,9 @@ let rec prune = ()
  Node (Node (Empty, true, Empty), true, Node (Empty, true, Empty)))
 [*----------------------------------------------------------------------------*)
 
-let rec map_tree = ()
+let rec map_tree f = function
+  | Empty -> Empty
+  | Node(tr1, x, tr2) -> Node(map_tree f tr1, f(x), map_tree f tr2)
 
 (*----------------------------------------------------------------------------*]
  Funkcija [list_of_tree] pretvori drevo v seznam. Vrstni red podatkov v seznamu
@@ -105,7 +125,14 @@ let rec map_tree = ()
  - : int list = [0; 2; 5; 6; 7; 11]
 [*----------------------------------------------------------------------------*)
 
-let rec list_of_tree = ()
+let rec append l1 l2 =
+  match l1 with
+  | h :: t -> h :: append t l2
+  | [] -> l2
+
+let rec list_of_tree = function 
+  | Empty -> []
+  | Node(tr1, x, tr2) -> (x :: (list_of_tree tr1)) @ (list_of_tree tr2)
 
 (*----------------------------------------------------------------------------*]
  Funkcija [is_bst] preveri ali je drevo binarno iskalno drevo (Binary Search 

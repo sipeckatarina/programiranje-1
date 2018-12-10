@@ -30,11 +30,7 @@ let rec get k = function
   | x :: xs, k -> get(xs, k-1)
 *)
 
-let rec get k list =
-  match (k, list) with
-  | _, [] -> failwith "List too short."
-  | 0, x :: xs when k <= 0-> x
-  | k, x :: xs -> get (k-1) xs
+let rec get k list = ()
   
 (*----------------------------------------------------------------------------*]
  Funkcija [double] podvoji pojavitve elementov v seznamu.
@@ -43,10 +39,7 @@ let rec get k list =
  - : int list = [1; 1; 2; 2; 3; 3]
 [*----------------------------------------------------------------------------*)
 
-let rec double = function
-  | [] -> failwith "empty list"
-  | x :: [] -> x :: x :: []
-  | x :: xs -> x :: x :: double xs  
+let rec double = ()
 
 (*----------------------------------------------------------------------------*]
  Funkcija [divide k list] seznam razdeli na dva seznama. Prvi vsebuje prvih [k]
@@ -75,11 +68,7 @@ let rec divide k list =
  - : int list = [0; 0; 0; 0; 0]
 [*----------------------------------------------------------------------------*)
 
-let rec delete k list = 
-  match k, list with
-  | k, [] -> failwith "Prekratek seznam"
-  | 0, x :: xs -> xs
-  | k, x :: xs -> x :: delete (k-1) xs   
+let rec delete k list = ()
 
 (*----------------------------------------------------------------------------*]
  Funkcija [slice i k list] sestavi nov seznam, ki vsebuje elemente seznama
@@ -90,10 +79,7 @@ let rec delete k list =
  - : int list = [1; 2; 3]
 [*----------------------------------------------------------------------------*)
 
-let rec slice x k list = 
-  match x, k , list with
-  | _, _, [] -> failwith "Ne dela"
-  | 0, k, x :: xs ->  
+let rec slice x k list = ()
 
 (*----------------------------------------------------------------------------*]
  Funkcija [insert x k list] na [k]-to mesto seznama [list] vrine element [x].
