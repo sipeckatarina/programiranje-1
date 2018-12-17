@@ -1,4 +1,6 @@
-# Programiranje 1
+﻿# Programiranje 1
+
+Fork za vaje pri predmetu.
 
 ## Prosojnice
 
