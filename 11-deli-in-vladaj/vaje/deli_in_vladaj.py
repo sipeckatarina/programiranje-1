@@ -26,6 +26,24 @@
 ##########################################################################
 
 
+def pivot_list(a, start, end):
+    pivot = a[start]
+    l = 0
+    for i in range(start + 1, end + 1):
+        if a[i] > pivot:
+            for j in range(i + 1, end + 1):
+                k = a[i]
+                if a[j] < pivot:
+                    a[i], a[j] = a[j], k 
+    print(a)
+    for i in range(start + 1, end + 1):
+        if a[i] > pivot:
+            a[start], a[i-1] = a[i-1], pivot
+            break
+    print("*", a)
+    return a.index(pivot)
+
+
 ##########################################################################
 # Tabelo a želimo urediti z algoritmom hitrega urejanja, ki smo ga
 # spoznali na predavanjih.
@@ -40,6 +58,12 @@
 #   >>> quicksort(a)
 #   [2, 3, 4, 5, 10, 11, 15, 17, 18]
 ##########################################################################
+
+
+def quicksort(a):
+    for i in range(0, len(a)-1):
+        pivot_list(a, i, len(a)-1)
+    return a
 
 
 ##########################################################################

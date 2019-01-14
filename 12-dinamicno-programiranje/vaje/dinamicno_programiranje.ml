@@ -16,11 +16,43 @@
    - : int = 13
    ----------*)
 
-let test_matrix = [| [| 1 ; 2 ; 0 |];
-                     [| 2 ; 4 ; 5 |];
-                     [| 7 ; 0 ; 1 |]  |]
+let test_matrix = [| [| 1 ; 2 ; 0; 5; 2; 9 |];
+                     [| 2 ; 4 ; 5; 5; 5; 1 |];
+                     [| 7 ; 0 ; 1; 5; 2; 9 |];
+                     [| 1 ; 2 ; 0; 3; 2; 3 |];
+                     [| 2 ; 4 ; 5; 5; 7; 9 |];
+                     [| 7 ; 0 ; 1; 5; 2; 9 |];
+                     [| 1 ; 2 ; 0; 5; 1; 6 |];
+                     [| 2 ; 4 ; 5; 7; 8; 9 |];
+                     [| 7 ; 0 ; 1; 5; 2; 9 |]  |]
 
-let max_cheese cheese_matrix = ()
+let memoiziraj_rec odviti_f =
+  let rezultati = Hashtbl.create 512 in
+  let rec mem_f x =
+    if Hashtbl.mem rezultati x then
+      Hashtbl.find rezultati x
+    else 
+      let y = odviti_f mem_f x in
+      Hashtbl.add rezultati x y;
+      y
+  in
+  mem_f
+
+let max_cheese cheese_matrix = 
+  let max_i = Array.length cheese_matrix in
+  let max_j = Array.length cheese_matrix.(0) in
+  let rec max_cheese1 recursive_max_cheese (i, j) =
+    if i >= max_i || j >= max_j then 0
+    else 
+      let right = max_cheese1 (i, j+1) in
+      let down = max_cheese1 (i+1, j) in
+      let our_cheese = cheese_matrix.(i).(j) in
+      our_cheese + max right down 
+  in
+  let memoised_max_cheese = memoiziraj_rec max_cheese1 in
+  memoised_max_cheese (0, 0)
+
+(* ne delajo stvari *)
 
 (* Rešujemo problem stolpov, ko smo ga spoznali na predavanjih.
    Imamo štiri različne tipe gradnikov, dva modra in dva rdeča.
